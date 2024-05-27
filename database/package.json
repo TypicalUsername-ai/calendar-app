@@ -6,5 +6,14 @@
   "dependencies": {
     "drizzle-orm": "^0.30.10",
     "postgres": "^3.4.4"
+  },
+  "type": "esnext",
+  "scripts": {
+    "db-gen": "drizzle-kit generate:pg",
+    "db-pull": "drizzle-kit introspect:pg",
+    "db-push": "drizzle-kit push:pg",
+    "db-check": "drizzle-kit check:pg",
+    "db-studio": "drizzle-kit studio"
   }
+
 }
