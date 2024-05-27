@@ -8,6 +8,8 @@
 - Shadcn/UI
 - eslint / oxlint
 
+[Frontend README](./frontend/README.md)
+
 ## Backend
 
 
