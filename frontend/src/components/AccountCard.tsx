@@ -9,8 +9,8 @@ import {
 } from "@components/ui/card"
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react"
-import { Button } from "./ui/button";
-import { Link } from 'react-router-dom'
+import { Button } from "@components/ui/button";
+import { Link, useNavigate } from 'react-router-dom'
 
 export default () => {
 
