@@ -52,9 +52,11 @@ services:
       GOTRUE_JWT_SECRET: ${GOTRUE_SECRET}
       GOTRUE_JWT_DEFAULT_GROUP_NAME: client
       GOTRUE_JWT_ADMIN_GROUP_NAME: admin
+      GOTRUE_DB_MIGRATIONS_PATH: "/opt/bitnami/gotrue"
       GOTRUE_DB_DRIVER: postgres
       DATABASE_URL: postgres://${PGUSER}:${PGPASS}@postgres:5432/${POSTGRES_DB}?options=-c%20search_path%3Dauth
       GOTRUE_DB_NAMESPACE: auth
+      DB_NAMESPACE: auth
       GOTRUE_API_HOST: 0.0.0.0
       API_EXTERNAL_URL: "http://localhost:9999"
       PORT: 9999

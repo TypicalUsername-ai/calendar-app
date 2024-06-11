@@ -4,6 +4,8 @@ import LoginPage from "@pages/LoginPage";
 import RegisterPage from "@pages/RegisterPage";
 import CalendarPage from "@pages/CalendarPage";
 
+
+
 export default [
     {
         path: "/",
