@@ -9,6 +9,7 @@ import {
 import { useState } from "react"
 import { Input } from '@components/ui/input'
 import { Button } from "@components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface LoginInfo {
     email: String,
@@ -29,7 +30,8 @@ interface Props {
 export default ({ validate, onSubmit }: Props) => {
 
     const [data, setData] = useState<LoginInfo>({ email: "", password: "" })
-    const [errors, setErrors] = useState<LoginErrors>()
+    const [errors, setErrors] = useState<LoginErrors>();
+    const navigate = useNavigate();
 
     const handleSubmit = () => {
         const errors = validate(data);
@@ -39,6 +41,10 @@ export default ({ validate, onSubmit }: Props) => {
             setErrors(errors);
         }
 
+    }
+
+    function onClick() {
+        navigate('/signup');
     }
 
     return (
@@ -55,7 +61,7 @@ export default ({ validate, onSubmit }: Props) => {
             </Content>
             <Footer className="flex flex-col gap">
                 <Button onClick={handleSubmit} > Login </Button>
-                <Button variant="link"> already have an account? </Button>
+                <Button variant="link" onClick={onClick}> don't have an account? </Button>
             </Footer>
         </Card>
     )

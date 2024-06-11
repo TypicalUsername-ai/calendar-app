@@ -9,9 +9,15 @@ import { useNavigate } from "react-router-dom"
 const validate = (data: RegisterInfo) => {
     var errors: RegisterErrors = { usernameError: null, emailError: null, passwordError: null, passwordConfirmationError: null }
     // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = /^[a-zA-Z0-9. _-]+@[a-zA-Z0-9. -]+\. [a-zA-Z]{2,4}$/
     if (!emailRegex.test(data.email)) {
         errors.emailError = "Invalid email format"
+    }
+
+    // Password validation
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+    if (!passwordRegex.test(data.password)) {
+        errors.passwordError = "Invalid password"
     }
 
     // Password and confirmation match
