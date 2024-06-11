@@ -1,13 +1,9 @@
-import RegisterForm from "@/components/Authorization/RegisterForm"
+import RegisterForm, { RegisterInfo, RegisterErrors } from "@/components/Authorization/RegisterForm"
+import authContext from "@/utils/authContext"
+import { useContext } from "react"
 
-const validate = (data) => {
-    const errors = {
-        emailError: null,
-        passwordError: null,
-        passwordConfirmationError: null,
-        usernameError: null,
-    }
-
+const validate = (data: RegisterInfo) => {
+    var errors: RegisterErrors = { usernameError: null, emailError: null, passwordError: null, passwordConfirmationError: null }
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(data.email)) {
@@ -33,32 +29,17 @@ const validate = (data) => {
     return null
 }
 
-const handleSubmit = async (data, setErrors) => {
-    try {
-        const response = await fetch('/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: data.email,
-                password: data.password,
-            }),
-        })
-        const result = await response.json()
-        if (response.ok) {
-            // Handle successful form submission
-            console.log("Form submitted with data:", result)
-        } else {
-            // Handle server-side validation errors if any
-            setErrors({ emailError: result.message, passwordError: null, passwordConfirmationError: null, usernameError: null })
-        }
-    } catch (error) {
-        setErrors({ emailError: 'Registration failed. Please try again later.', passwordError: null, passwordConfirmationError: null, usernameError: null })
-    }
-}
 
 export default () => {
+
+    const auth = useContext(authContext);
+
+    const handleSubmit = async (data: RegisterInfo) => {
+        const newAccount = await auth.signup(data.email, data.password, { username: data.username });
+        console.log(newAccount)
+
+    }
+
     return (
         <div>
             <RegisterForm validate={validate} onSubmit={handleSubmit} />

@@ -6,27 +6,27 @@ import {
     CardHeader as Header,
     CardTitle as Title,
 } from "@components/ui/card"
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { Input } from '@components/ui/input'
 import { Button } from "@components/ui/button";
 
-interface RegisterInfo {
-    email: String,
-    password: String,
-    passwordConfirmation: String,
-    username: String
+export interface RegisterInfo {
+    email: string,
+    password: string,
+    passwordConfirmation: string,
+    username: string
 }
 
-interface RegisterErrors {
-    emailError: String | null,
-    passwordError: String | null,
-    passwordConfirmationError: String | null,
-    usernameError: String | null
+export interface RegisterErrors {
+    emailError: string | null,
+    passwordError: string | null,
+    passwordConfirmationError: string | null,
+    usernameError: string | null
 }
 
 interface Props {
     validate: (data: RegisterInfo) => RegisterErrors | null,
-    onSubmit: (data: RegisterInfo, setErrors: (errors: RegisterErrors | null) => void) => void
+    onSubmit: (data: RegisterInfo) => void
 }
 
 
@@ -37,7 +37,7 @@ export default ({ validate, onSubmit }: Props) => {
     const handleSubmit = () => {
         const errors = validate(data);
         if (!errors) {
-            onSubmit(data, setErrors);
+            onSubmit(data);
         } else {
             setErrors(errors);
         }
