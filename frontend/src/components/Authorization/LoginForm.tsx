@@ -11,14 +11,14 @@ import { Input } from '@components/ui/input'
 import { Button } from "@components/ui/button";
 import { useNavigate } from "react-router-dom";
 
-interface LoginInfo {
-    email: String,
-    password: String
+export interface LoginInfo {
+    email: string,
+    password: string
 }
 
-interface LoginErrors {
-    emailError: String | null,
-    passwordError: String | null
+export interface LoginErrors {
+    emailError: string | null,
+    passwordError: string | null
 }
 
 interface Props {

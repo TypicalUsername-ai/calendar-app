@@ -60,6 +60,6 @@ services:
       GOTRUE_API_HOST: 0.0.0.0
       API_EXTERNAL_URL: "http://localhost:9999"
       PORT: 9999
-      GOTRUE_MAILER_AUTOCONFIRM: false
+      GOTRUE_MAILER_AUTOCONFIRM: true
     ports:
       - "9999:9999/tcp"

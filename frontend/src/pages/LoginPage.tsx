@@ -4,6 +4,7 @@ import { useToast } from "@/components/ui/use-toast"
 import authContext from "@/utils/authContext"
 import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import axios from "axios"
 
 
 const validate = (data: LoginInfo) => {
@@ -42,12 +43,14 @@ export default () => {
 
     const handleSubmit = async (data: LoginInfo) => {
         try {
-            const account = await auth.login(data.email, data.password);
+            const response = await axios.post('http://localhost:9999/token?grant_type=password', { email: data.email, password: data.password });
+            auth.createUser(response, true);
             toast({
                 title: "Hooray!",
                 description: `Logged in successfully.`
             })
         } catch (error: any) {
+            console.error(error)
             toast({
                 title: "Something went wrong...",
                 description: error.json.msg,
@@ -59,7 +62,7 @@ export default () => {
 
     return (
         <div>
-            <LoginForm validate={validate} onSubmit={handleSubmit}/>
+            <LoginForm validate={validate} onSubmit={handleSubmit} />
             <Toaster />
         </div>
     )
