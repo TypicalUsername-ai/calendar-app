@@ -1,5 +1,8 @@
 import RegisterForm, { RegisterInfo, RegisterErrors } from "@/components/Authorization/RegisterForm"
+import { Toaster } from "@/components/ui/toaster"
+import { useToast } from "@/components/ui/use-toast"
 import authContext from "@/utils/authContext"
+import { AxiosError } from "axios"
 import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -35,6 +38,7 @@ export default () => {
 
     const auth = useContext(authContext);
     const navigate = useNavigate();
+    const { toast } = useToast();
 
     useEffect(() => {
         if (auth.currentUser()) {
@@ -43,14 +47,26 @@ export default () => {
     }, []);
 
     const handleSubmit = async (data: RegisterInfo) => {
-        const newAccount = await auth.signup(data.email, data.password, { username: data.username });
-        console.log(newAccount)
+        try {
+            const newAccount = await auth.signup(data.email, data.password, { username: data.username });
+            toast({
+                title: "Hooray!",
+                description: `Account ${data.username} created succesfully.`
+            })
+        } catch (error: any) {
+            toast({
+                title: "Something went wrong...",
+                description: error.json.msg,
+                variant: 'destructive'
+            })
+        }
 
     }
 
     return (
         <div>
             <RegisterForm validate={validate} onSubmit={handleSubmit} />
+            <Toaster />
         </div>
     )
 }
