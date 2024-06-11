@@ -1,6 +1,7 @@
 import RegisterForm, { RegisterInfo, RegisterErrors } from "@/components/Authorization/RegisterForm"
 import authContext from "@/utils/authContext"
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 const validate = (data: RegisterInfo) => {
     var errors: RegisterErrors = { usernameError: null, emailError: null, passwordError: null, passwordConfirmationError: null }
@@ -33,6 +34,13 @@ const validate = (data: RegisterInfo) => {
 export default () => {
 
     const auth = useContext(authContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (auth.currentUser()) {
+            navigate('/calendar');
+        }
+    }, []);
 
     const handleSubmit = async (data: RegisterInfo) => {
         const newAccount = await auth.signup(data.email, data.password, { username: data.username });
