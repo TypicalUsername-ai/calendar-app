@@ -56,7 +56,7 @@ export default ({ validate, onSubmit }: Props) => {
             <Content className="p-2 flex flex-col gap-2">
                 <Input onChange={(e) => setData({ ...data, email: e.target.value })} placeholder="Email" />
                 <p>{errors?.emailError}</p>
-                <Input onChange={(e) => setData({ ...data, password: e.target.value })} placeholder="Password" />
+                <Input type="password" onChange={(e) => setData({ ...data, password: e.target.value })} placeholder="Password" />
                 <p>{errors?.passwordError}</p>
             </Content>
             <Footer className="flex flex-col gap">

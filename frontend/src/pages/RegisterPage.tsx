@@ -2,20 +2,19 @@ import RegisterForm, { RegisterInfo, RegisterErrors } from "@/components/Authori
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/components/ui/use-toast"
 import authContext from "@/utils/authContext"
-import { AxiosError } from "axios"
 import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 const validate = (data: RegisterInfo) => {
     var errors: RegisterErrors = { usernameError: null, emailError: null, passwordError: null, passwordConfirmationError: null }
     // Email validation
-    const emailRegex = /^[a-zA-Z0-9. _-]+@[a-zA-Z0-9. -]+\. [a-zA-Z]{2,4}$/
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(data.email)) {
         errors.emailError = "Invalid email format"
     }
 
     // Password validation
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+    const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>_])(?=.*\d)[A-Za-z\d!@#$%^&*(),.?":{}|<>_]{8,}$/
     if (!passwordRegex.test(data.password)) {
         errors.passwordError = "Invalid password"
     }
