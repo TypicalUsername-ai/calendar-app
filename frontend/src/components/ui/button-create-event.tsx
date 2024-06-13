@@ -92,6 +92,8 @@ const CreateEventButton: React.FC<CreateEventButtonProps> = ({ events, setNewEve
                   </select>
                 </section>
                 <input className='h-10 text-lg ' placeholder='Title' />
+                <input className='h-10 text-lg ' placeholder='Location' />
+                <textarea className='h-40 text-lg ' maxLength={250} placeholder='Description' />
               </div>
               <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
                 {callsToAction.map((item) => (
