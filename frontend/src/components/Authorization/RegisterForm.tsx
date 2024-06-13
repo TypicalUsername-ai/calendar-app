@@ -11,26 +11,29 @@ import { Input } from '@components/ui/input'
 import { Button } from "@components/ui/button";
 import { useNavigate } from "react-router-dom";
 
-export interface LoginInfo {
+export interface RegisterInfo {
     email: string,
-    password: string
+    password: string,
+    passwordConfirmation: string,
+    username: string
 }
 
-export interface LoginErrors {
+export interface RegisterErrors {
     emailError: string | null,
-    passwordError: string | null
+    passwordError: string | null,
+    passwordConfirmationError: string | null,
+    usernameError: string | null
 }
 
 interface Props {
-    validate: (data: LoginInfo) => LoginErrors | null,
-    onSubmit: (data: LoginInfo) => void
+    validate: (data: RegisterInfo) => RegisterErrors | null,
+    onSubmit: (data: RegisterInfo) => void
 }
 
 
 export default ({ validate, onSubmit }: Props) => {
-
-    const [data, setData] = useState<LoginInfo>({ email: "", password: "" })
-    const [errors, setErrors] = useState<LoginErrors>();
+    const [data, setData] = useState<RegisterInfo>({ email: "", password: "", passwordConfirmation: "", username: "" })
+    const [errors, setErrors] = useState<RegisterErrors | null>(null)
     const navigate = useNavigate();
 
     const handleSubmit = () => {
@@ -44,13 +47,13 @@ export default ({ validate, onSubmit }: Props) => {
     }
 
     function onClick() {
-        navigate('/signup');
+        navigate('/login');
     }
 
     return (
         <Card className="max-w-[400px] max-h-[600px]">
             <Header>
-                <Title> Welcome Back </Title>
+                <Title> Welcome! </Title>
                 <Description> please input your data </Description>
             </Header>
             <Content className="p-2 flex flex-col gap-2">
@@ -58,10 +61,14 @@ export default ({ validate, onSubmit }: Props) => {
                 <p>{errors?.emailError}</p>
                 <Input type="password" onChange={(e) => setData({ ...data, password: e.target.value })} placeholder="Password" />
                 <p>{errors?.passwordError}</p>
+                <Input type="password" onChange={(e) => setData({ ...data, passwordConfirmation: e.target.value })} placeholder="Password confirmation" />
+                <p>{errors?.passwordConfirmationError}</p>
+                <Input onChange={(e) => setData({ ...data, username: e.target.value })} placeholder="Username" />
+                <p>{errors?.usernameError}</p>
             </Content>
             <Footer className="flex flex-col gap">
-                <Button onClick={handleSubmit} > Login </Button>
-                <Button variant="link" onClick={onClick}> don't have an account? </Button>
+                <Button onClick={handleSubmit} > Register </Button>
+                <Button variant="link" onClick={onClick}> already have an account? </Button>
             </Footer>
         </Card>
     )
