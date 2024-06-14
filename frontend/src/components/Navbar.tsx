@@ -11,22 +11,66 @@ import {
 import { Button } from '@components/ui/button'
 import AccountCard from '@components/AccountCard'
 import { useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import { Toaster } from "@/components/ui/toaster"
+import { useToast } from "@/components/ui/use-toast"
+import authContext from "@/utils/authContext"
+import axios from "axios"
+import { useQuery } from "@tanstack/react-query";
 
 export default () => {
 
     const navigate = useNavigate();
+    const auth = useContext(authContext);
+    const { toast } = useToast();
+
+    const session = useQuery({
+        queryKey: ['user'],
+        queryFn: async () => {
+            const data = await auth.currentUser()?.getUserData();
+            return data
+        }
+    })
+
+    async function logout() {
+        try {
+            await axios.post(`http://localhost:9999/logout`, {}, {
+                headers: { 'Authorization': `Bearer ${session.data?.token.access_token}` }
+            });
+
+            toast({
+                title: "Hooray!",
+                description: `Logged out successfully.`
+            });
+        } catch (error: any) {
+            console.error(error);
+            toast({
+                title: "Something went wrong...",
+                description: error.response?.data?.error_description || error.message,
+                variant: 'destructive'
+            });
+        }
+    }
+    
 
     return (
-        <Menu className="p-2 border-2 rounded-md">
-            <MenuList>
-                <Item> <Button variant="link" onClick={() => navigate('/')} > <NavLink> Home </NavLink> </Button> </Item>
-                <Item> <Button variant="link" onClick={() => navigate('/calendar')} > <NavLink> Calendar </NavLink> </Button> </Item>
-                <Item> <NavLink>
-                    <MenuTrigger className="text-primary"> Account </MenuTrigger>
-                    <MenuContent> <AccountCard /> </MenuContent>
-                </NavLink> </Item>
-            </MenuList>
-        </Menu>
-
+        <>
+            <Menu className="p-2 border-2 rounded-md">
+                <MenuList>
+                    <Item> <Button variant="link" onClick={() => navigate('/')} > <NavLink> Home </NavLink> </Button> </Item>
+                    { session.isSuccess && (
+                        <>
+                            <Item> <Button variant="link" onClick={() => navigate('/calendar')} > <NavLink> Calendar </NavLink> </Button> </Item>
+                            <Item> <Button variant="link" onClick={() => logout()} > <NavLink> Logout </NavLink> </Button> </Item>
+                        </>
+                    )}
+                    <Item> <NavLink>
+                        <MenuTrigger className="text-primary"> Account </MenuTrigger>
+                        <MenuContent> <AccountCard /> </MenuContent>
+                    </NavLink> </Item>
+                </MenuList>
+            </Menu>
+            <Toaster />
+        </>
     )
 }
