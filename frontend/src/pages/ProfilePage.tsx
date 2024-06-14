@@ -19,7 +19,12 @@ export default () => {
 
     const onEdit = async (data: UserData): Promise<boolean> => {
         try {
-            throw new Error();
+            const user = auth.currentUser()!
+            await user.update({ email: data.email, usename: data.username })
+            toast({
+                title: "Account update succesful",
+                variant: 'default'
+            })
             return true;
         }
         catch (error) {
@@ -34,7 +39,7 @@ export default () => {
 
     return (
         <div>
-            <UserDataCard status={account.status} userData={account.data} onEdit={onEdit} />
+            <UserDataCard status={account.status} userData={account.data} onEdit={(data) => onEdit(data)} />
         </div>
     )
 }

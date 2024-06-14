@@ -68,10 +68,10 @@ const AccountEditForm = ({ initialData, onEdit, onAbort }: { initialData: UserDa
             <Input id="username" type='text' placeholder={initialData.username} onChange={e => setData({ ...initialData, username: e.target.value })} />
 
             <Label htmlFor="email"> e-mail </Label>
-            <Input id="email" type='email' placeholder={initialData.email} onChange={e => setData({ ...initialData, email: e.target.value })} />
+            <Input id="email" type='email' placeholder={initialData.email} onChange={e => setData({ ...initialData, email: e.target.value })} onInvalid={_ => alert('invalid input')} />
             <div className="flex flex-row gap-2">
                 <Button variant='destructive' onClick={onAbort}> cancel </Button>
-                <Button onClick={_ => submit}> Submit </Button>
+                <Button onClick={_ => submit()}> Submit </Button>
             </div>
         </div >
     )
