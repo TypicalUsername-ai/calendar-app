@@ -1,5 +1,4 @@
 import RegisterForm, { RegisterInfo, RegisterErrors } from "@/components/Authorization/RegisterForm"
-import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/components/ui/use-toast"
 import authContext from "@/utils/authContext"
 import { useContext, useEffect } from "react"
@@ -71,7 +70,6 @@ export default () => {
     return (
         <div>
             <RegisterForm validate={validate} onSubmit={handleSubmit} />
-            <Toaster />
         </div>
     )
 }

@@ -49,6 +49,7 @@ export default () => {
                 title: "Hooray!",
                 description: `Logged in successfully.`
             })
+            navigate('/calendar');
         } catch (error: any) {
             console.error(error)
             toast({
@@ -63,7 +64,6 @@ export default () => {
     return (
         <div>
             <LoginForm validate={validate} onSubmit={handleSubmit} />
-            <Toaster />
         </div>
     )
 }
