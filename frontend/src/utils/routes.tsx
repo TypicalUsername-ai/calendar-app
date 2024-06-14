@@ -3,6 +3,7 @@ import RootPage from '@pages/RootPage'
 import LoginPage from "@pages/LoginPage";
 import RegisterPage from "@pages/RegisterPage";
 import CalendarPage from "@pages/CalendarPage";
+import ProfilePage from "@/pages/ProfilePage";
 
 
 
@@ -22,6 +23,10 @@ export default [
             {
                 path: "calendar",
                 element: <CalendarPage />
+            },
+            {
+                path: "profile",
+                element: <ProfilePage />
             }
         ]
     }
