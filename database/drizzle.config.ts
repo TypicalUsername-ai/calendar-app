@@ -10,7 +10,7 @@ export default defineConfig({
         password: process.env.DB_PASSWORD ?? "",
         host: process.env.DB_HOST ?? "localhost",
         database: process.env.DB_NAME ?? "postgres",
-        ssl: true
+        ssl: false
     },
     verbose: true,
     strict: true,
