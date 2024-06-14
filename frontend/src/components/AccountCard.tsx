@@ -10,11 +10,12 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react"
 import { Button } from "@components/ui/button";
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default () => {
 
     const auth = useContext(authContext);
+    const navigate = useNavigate();
 
     const session = useQuery({
         queryKey: ['user'],
@@ -25,25 +26,29 @@ export default () => {
     })
 
     return (
-        <Card>
+        <Card className="w-56">
             <Header>
                 {session.isSuccess ?
-                    <Title> Hello, {session.data?.email.split('@')[0]} </Title>
+                    <Title> Hello, {session.data?.user_metadata.username} </Title>
                     :
                     <Title> Hello, you </Title>
                 }
+                <Description>
+                    It's nice to see you
+                </Description>
             </Header>
             <Content>
                 {session.isSuccess ?
                     <ul>
-                        <Button variant='link'> <Link to='/profile'> profile </Link> </Button>
+                        <Button variant='link' onClick={() => navigate('/profile')}> profile  </Button>
                     </ul>
                     :
                     <ul>
-                        <Button> <Link to='/login'> Log in </Link> </Button>
-                        <Button variant='secondary'> <Link to='signup'> Sign up </Link> </Button>
+                        <Button onClick={_ => navigate('/login')} >  Log in  </Button>
+                        <Button variant='secondary' onClick={_ => navigate('/signup')}>  Sign up  </Button>
                     </ul>}
             </Content>
+            <Footer />
         </Card>
     )
 }
