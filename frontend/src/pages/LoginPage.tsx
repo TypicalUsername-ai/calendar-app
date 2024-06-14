@@ -44,7 +44,7 @@ export default () => {
     const handleSubmit = async (data: LoginInfo) => {
         try {
             const response = await axios.post('http://localhost:9999/token?grant_type=password', { email: data.email, password: data.password });
-            auth.createUser(response, true);
+            auth.createUser(response.data, true);
             toast({
                 title: "Hooray!",
                 description: `Logged in successfully.`
