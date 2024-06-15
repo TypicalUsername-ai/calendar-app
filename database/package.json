@@ -1,18 +1,19 @@
 {
   "devDependencies": {
     "@types/node": "^20.12.12",
-    "drizzle-kit": "^0.21.4"
+    "drizzle-kit": "^0.21.4",
+    "esrun": "^3.2.26"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.30.10",
     "postgres": "^3.4.4"
   },
-  "type": "esnext",
+  "type": "module",
   "scripts": {
     "db-gen": "drizzle-kit generate",
     "db-pull": "drizzle-kit introspect",
-    "db-push": "drizzle-kit push",
+    "db-push": "drizzle-kit push; esrun schema/permissions.mts",
     "db-check": "drizzle-kit check",
     "db-studio": "drizzle-kit studio"
   }
