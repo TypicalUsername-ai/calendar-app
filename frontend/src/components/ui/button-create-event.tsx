@@ -4,33 +4,33 @@ import { ChevronDownIcon, PhoneIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { addEvent } from '@/functions/calendar';
 
 interface CreateEventButtonProps {
-  events: Record<string, any>;
-  setNewEvent: (newEvent: any) => void;
-  newEvent: any;
+  axios: any;
+  auth: any;
+  session: any;
 }
 
 const callsToAction = [
   { name: 'Add Event', href: '#', icon: PlusIcon },
 ];
 
-const CreateEventButton: React.FC<CreateEventButtonProps> = ({ events, setNewEvent, newEvent }) => {
+const CreateEventButton: React.FC<CreateEventButtonProps> = ({ axios, auth, session }) => {
   // Variables used to create an event
-  const [selectedDate, setSelectedDate] = useState<string>('');
-  const [selectedHour, setSelectedHour] = useState<string>('');
-  const [selectedMinute, setSelectedMinute] = useState<string>('0');
+  const [formData, setFormData] = useState({
+    startDate: '',
+    endDate: '',
+    startTime: '',
+    endTime: '',
+    title: '',
+    description: '',
+    location: ''
+  });
 
-  // Functions that handle the change of variables 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(event.target.value);
-  };
-
-  const handleHourChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedHour(event.target.value);
-  };
-
-  const handleMinuteChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target;
-    setSelectedMinute(value);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   return (
@@ -54,53 +54,61 @@ const CreateEventButton: React.FC<CreateEventButtonProps> = ({ events, setNewEve
             <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
               <div className="p-4 flex flex-col">
                 <section>
-                  <label className='h-10 text-lg'>Date: </label>
+                  <label className='h-10 text-lg'>Start Date: </label>
                   <input
                     type="date"
                     className='h-10 text-lg border-solid border-2 border-sky-500 ml-8'
-                    value={selectedDate}
-                    onChange={handleDateChange}
+                    name='startDate'
+                    value={formData.startDate}
+                    onChange={handleChange}
                     placeholder='Date'
                   />
                 </section>
                 
                 <section>
-                  <label className='h-10 text-lg' htmlFor="hourPicker">Hour:</label>
+                  <label className='h-10 text-lg' htmlFor="hourPicker">Start Hour:</label>
                   <input
-                    className='h-10 text-lg border-solid border-2 border-sky-500 ml-1'
-                    id="hourPicker"
-                    type="number"
-                    min="6"
-                    max="20"
-                    value={selectedHour}
-                    onChange={handleHourChange}
+                      className='h-10 text-lg border-solid border-2 border-sky-500 ml-4'
+                      type="time"
+                      id="time"
+                      name="startTime"
+                      value={formData.startTime}
+                      onChange={handleChange}
+                />
+                </section>
+                <section>
+                  <label className='h-10 text-lg'>End Date: </label>
+                  <input
+                    type="date"
+                    className='h-10 text-lg border-solid border-2 border-sky-500 ml-8'
+                    name='endDate'
+                    value={formData.endDate}
+                    onChange={handleChange}
+                    placeholder='Date'
                   />
                 </section>
-
                 <section>
-                  <label htmlFor="minutePicker" className='h-10 text-lg'>Minutes:</label>
-                  <select
-                    className='h-10 text-lg border-solid border-2 border-sky-500 ml-4'
-                    id="minutePicker"
-                    value={selectedMinute}
-                    onChange={handleMinuteChange}
-                  >
-                    <option value="0">00</option>
-                    <option value="1">15</option>
-                    <option value="2">30</option>
-                    <option value="3">45</option>
-                  </select>
+                  <label className='h-10 text-lg' htmlFor="hourPicker">End Hour:</label>
+                  <input
+                      className='h-10 text-lg border-solid border-2 border-sky-500 ml-4'
+                      type="time"
+                      id="time"
+                      name="endTime"
+                      value={formData.endTime}
+                      onChange={handleChange}
+                />
                 </section>
-                <input className='h-10 text-lg ' placeholder='Title' />
-                <input className='h-10 text-lg ' placeholder='Location' />
-                <textarea className='h-40 text-lg ' maxLength={250} placeholder='Description' />
+
+                <input name='title' value={formData.title} onChange={handleChange} className='h-10 text-lg ' placeholder='Title' />
+                <input name='description' value={formData.description} onChange={handleChange} className='h-10 text-lg ' placeholder='Location' />
+                <textarea name='location' value={formData.location} onChange={handleChange} className='h-40 text-lg ' maxLength={250} placeholder='Description' />
               </div>
               <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
                 {callsToAction.map((item) => (
                   <button
                     key={item.name}
                     onClick={() => {
-                      addEvent(parseInt(selectedHour), parseInt(selectedMinute), selectedDate, events, setNewEvent, newEvent);
+                      addEvent( axios, auth, formData, session );
                       close();
                     }}
                     className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100"

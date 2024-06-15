@@ -2,6 +2,10 @@ import Calendar from "@/components/ui/calendar";
 import React, { useState } from 'react';
 import { startOfWeek, endOfWeek, addWeeks, subWeeks, addDays, subDays, eachDayOfInterval } from 'date-fns';
 import NavigationCalendar from "@/components/ui/navigation-calendar";
+import { useQuery } from "@tanstack/react-query";
+import authContext from "@/utils/authContext";
+import axiosContext from "@/utils/axiosContext";
+import { useContext } from "react";
 
 export default function CalendarPage () {
 
@@ -11,6 +15,24 @@ export default function CalendarPage () {
     const daysOfWeek = eachDayOfInterval({ start: startDate, end: endDate });
     const [events, setEvents] = useState({});
     const [newEvent, setNewEvent] = useState('');
+    const auth = useContext(authContext);
+    const axios = useContext(axiosContext);
+    
+    const session = useQuery({
+        queryKey: ['user'],
+        queryFn: async () => {
+            const data = await auth.currentUser()?.getUserData();
+            return data
+        }
+    })
+
+    const token = useQuery({
+        queryKey: ['token'],
+        queryFn: async () => {
+            const data = await auth.currentUser()?.jwt();
+            return data
+        }
+    })
 
     return(
         <section>
@@ -19,9 +41,9 @@ export default function CalendarPage () {
                 nextWeek={() => setCurrentWeek(addWeeks(currentWeek, 1))} 
                 startDate={startDate} 
                 endDate={endDate}      
-                events={events}
-                setNewEvent={setNewEvent}
-                newEvent={newEvent}   
+                axios={axios}
+                auth={token}
+                session={session}
                 />
             <Calendar 
             daysOfWeek={daysOfWeek} 
