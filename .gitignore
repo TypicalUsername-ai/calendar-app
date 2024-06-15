@@ -1,3 +1,5 @@
 **/node_modules/
 **/.env
 
+ssl/mailer_cert.pem
+ssl/mailer_key.pem

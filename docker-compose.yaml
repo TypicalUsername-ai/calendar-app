@@ -38,6 +38,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - "./ssl/mailer_cert.pem:/etc/ssl/certs/mailer_cert.pem"
     healthcheck:
       test:
         [
@@ -60,6 +62,23 @@ services:
       GOTRUE_API_HOST: 0.0.0.0
       API_EXTERNAL_URL: "http://localhost:9999"
       PORT: 9999
-      GOTRUE_MAILER_AUTOCONFIRM: true
+      GOTRUE_SMTP_HOST: mailer
+      GOTRUE_SMTP_PORT: 1025
+      GOTRUE_SMTP_USER: ${MAILER_LOGIN}
+      GOTRUE_SMTP_PASS: ${MAILER_PASSWORD}
+      GOTRUE_SMTP_ADMIN_EMAIL: support@calendarapp.com
+      GOTRUE_MAILER_AUTOCONFIRM: false
     ports:
       - "9999:9999/tcp"
+
+  mailer:
+    image: docker.io/axllent/mailpit
+    volumes:
+      - "./ssl:/home/ssl"
+    environment:
+      MP_SMTP_AUTH: ${MAILER_LOGIN}:${MAILER_PASSWORD}
+      MP_SMTP_TLS_CERT: /home/ssl/mailer_cert.pem
+      MP_SMTP_TLS_KEY: /home/ssl/mailer_key.pem
+    ports:
+      - "8025:8025"
+      - "1025:1025"
