@@ -1,5 +1,4 @@
 import LoginForm, { LoginInfo, LoginErrors } from "@components/Authorization/LoginForm"
-import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/components/ui/use-toast"
 import authContext from "@/utils/authContext"
 import { useContext, useEffect } from "react"
@@ -36,9 +35,18 @@ export default () => {
     const { toast } = useToast();
 
     useEffect(() => {
-        if (auth.currentUser()) {
-            navigate('/calendar');
-        }
+        auth.currentUser()?.getUserData().then(
+            _ => navigate('/calendar')
+        ).catch(
+            e => {
+                toast({
+                    title: "Could not autologin",
+                    description: JSON.stringify(e),
+                    variant: 'destructive'
+                })
+                auth.currentUser()?.clearSession();
+            }
+        )
     }, []);
 
     const handleSubmit = async (data: LoginInfo) => {
