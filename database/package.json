@@ -10,10 +10,10 @@
   },
   "type": "esnext",
   "scripts": {
-    "db-gen": "drizzle-kit generate:pg",
-    "db-pull": "drizzle-kit introspect:pg",
-    "db-push": "drizzle-kit push:pg",
-    "db-check": "drizzle-kit check:pg",
+    "db-gen": "drizzle-kit generate",
+    "db-pull": "drizzle-kit introspect",
+    "db-push": "drizzle-kit push",
+    "db-check": "drizzle-kit check",
     "db-studio": "drizzle-kit studio"
   }
 }

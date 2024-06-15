@@ -12,6 +12,7 @@ export default defineConfig({
         database: process.env.DB_NAME ?? "postgres",
         ssl: false
     },
+    schemaFilter: ['api', 'public'],
     verbose: true,
     strict: true,
     out: './drizzle'
