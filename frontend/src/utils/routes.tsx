@@ -4,6 +4,7 @@ import LoginPage from "@pages/LoginPage";
 import RegisterPage from "@pages/RegisterPage";
 import CalendarPage from "@pages/CalendarPage";
 import ProfilePage from "@/pages/ProfilePage";
+import PasswordRemindPage from "@/pages/PasswordRemindPage";
 
 
 
@@ -27,6 +28,10 @@ export default [
             {
                 path: "profile",
                 element: <ProfilePage />
+            },
+            {
+                path: "forgot-password",
+                element: <PasswordRemindPage />
             }
         ]
     }
