@@ -15,26 +15,26 @@ export default () => {
         if (path.hash != "") {
             const params = new URLSearchParams(path.hash.substring(1))
             var data: any = {};
-            console.warn(params.get("type"))
             for (const [key, val] of params) {
                 data[key] = val;
             }
 
-            if (data.access_token) auth.createUser(data, true).then(
-                u => console.log(u)
-            );
+            if (data.access_token) auth.createUser(data, true);
 
             if (data.message) {
                 toast({
                     title: data.message
                 })
             }
+            console.warn(params.get("type"))
             switch (params.get("type")) {
                 case "recovery": {
-                    navigate('new-password')
+                    navigate("/new-password")
+                    break
                 }
                 case "email_change": {
                     navigate("/profile")
+                    break
                 }
                 default: {
                     navigate("/")

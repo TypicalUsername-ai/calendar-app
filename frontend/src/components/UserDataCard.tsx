@@ -11,7 +11,7 @@ import { Switch } from "@components/ui/switch"
 import { Label } from "@components/ui/label"
 import { Button } from "@components/ui/button";
 import { useState } from 'react'
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "@components/ui/skeleton";
 
 export interface UserData {
     username: string,
