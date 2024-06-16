@@ -59,10 +59,9 @@ export default () => {
             })
             navigate('/calendar');
         } catch (error: any) {
-            console.error(error)
             toast({
                 title: "Something went wrong...",
-                description: error.json.msg,
+                description: error.json?.msg || error.response?.data.error_description,
                 variant: 'destructive'
             })
         }
