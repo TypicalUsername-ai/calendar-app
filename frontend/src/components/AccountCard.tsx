@@ -20,7 +20,11 @@ export default () => {
     const session = useQuery({
         queryKey: ['user'],
         queryFn: async () => {
-            const data = await auth.currentUser()?.getUserData();
+            const user = auth.currentUser();
+            if (user == null) {
+                throw new Error("no current user")
+            }
+            const data = await user.getUserData();
             return data
         }
     })
