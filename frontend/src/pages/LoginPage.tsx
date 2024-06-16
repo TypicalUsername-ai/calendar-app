@@ -69,9 +69,18 @@ export default () => {
 
     }
 
+    const handleRemind = async () => {
+        console.warn("reminding")
+    }
+
     return (
         <div>
-            <LoginForm validate={validate} onSubmit={handleSubmit} />
+            <LoginForm
+                validate={validate}
+                onSubmit={handleSubmit}
+                onRegister={() => navigate('/signup')}
+                onForgot={handleRemind}
+            />
         </div>
     )
 }
