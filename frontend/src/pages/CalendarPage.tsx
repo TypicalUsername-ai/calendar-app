@@ -13,10 +13,9 @@ export default function CalendarPage () {
     const startDate = startOfWeek(currentWeek);
     const endDate = endOfWeek(currentWeek);
     const daysOfWeek = eachDayOfInterval({ start: startDate, end: endDate });
-    const [events, setEvents] = useState({});
-    const [newEvent, setNewEvent] = useState('');
     const auth = useContext(authContext);
     const axios = useContext(axiosContext);
+    const [isLoading, setIsLoading] = useState(true);
     
     const session = useQuery({
         queryKey: ['user'],
@@ -34,9 +33,21 @@ export default function CalendarPage () {
         }
     })
 
+    const array_events = useQuery({
+        queryKey: ['events'],
+        queryFn: async () => {
+            const data = await axios.get("/events", { headers: { 'Authorization': `Bearer ${token.data}` } } )
+            setIsLoading(false)
+            return data
+        },
+        enabled: !!token.data        
+    })
+
     return(
         <section>
-            <NavigationCalendar
+            {!isLoading ?
+            <section>
+                <NavigationCalendar
                 prevWeek={() => setCurrentWeek(subWeeks(currentWeek, 1))} 
                 nextWeek={() => setCurrentWeek(addWeeks(currentWeek, 1))} 
                 startDate={startDate} 
@@ -45,12 +56,14 @@ export default function CalendarPage () {
                 auth={token}
                 session={session}
                 />
-            <Calendar 
-            daysOfWeek={daysOfWeek} 
-            numCols={7} 
-            numRows={58} 
-            events={events}
-            />
+                <Calendar 
+                    daysOfWeek={daysOfWeek} 
+                    numCols={7} 
+                    numRows={74} 
+                    events={array_events.data.data}
+                />
+            </section> : <div></div>
+            }
         </section>
     );
 }

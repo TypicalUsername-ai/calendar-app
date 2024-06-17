@@ -14,12 +14,6 @@ export const addEvent = (
     Indexing in calendar starts from 0 and is set to 6:00 ->  (6-6)*4+0=0 => 6:00
     (7-6)*4+2=6 =>  7:30
     */
-    //console.log(hour + minutes);
-    //let convertedIndex = ((hour - 6) * 4) + minutes;
-    //events[`${convertedIndex}-${col}`] = newEvent;
-    //setNewEvent(`${convertedIndex}-${col}`);
-    console.log(formData)
-    console.log(auth.data)
 
     /**
      * Adding event object to database
@@ -48,3 +42,4 @@ export const renderEvents = (
         return null;
     }
 };
+ 
