@@ -59,7 +59,7 @@ export default function CalendarPage () {
                 <Calendar 
                     daysOfWeek={daysOfWeek} 
                     numCols={7} 
-                    numRows={74} 
+                    numRows={48} 
                     events={array_events.data.data}
                 />
             </section> : <div></div>
