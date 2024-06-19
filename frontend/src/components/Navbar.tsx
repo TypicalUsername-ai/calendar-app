@@ -45,6 +45,7 @@ export default () => {
                 description: `Logged out successfully.`
             });
             navigate("/")
+            location.reload()
         } catch (error: any) {
             console.error(error);
             toast({
@@ -65,6 +66,7 @@ export default () => {
                         <>
                             <Item> <Button variant="link" onClick={() => navigate('/calendar')} > <NavLink> Calendar </NavLink> </Button> </Item>
                             <Item> <Button variant="link" onClick={() => logout()} > <NavLink> Logout </NavLink> </Button> </Item>
+                            <Item> <Button variant="link" onClick={() => navigate('/import')} > <NavLink> Event Import </NavLink> </Button></Item>
                         </>
                     )}
                     <Item> <NavLink>
