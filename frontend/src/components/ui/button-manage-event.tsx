@@ -179,7 +179,9 @@ const ManageEventButton: React.FC<ManageEventButtonProps> = ({ axios, auth, sess
                         handleEventEdition(axios, auth, formData, session, event.id);
                         location.reload()
                     } else {
+                      if (window.confirm("Are you sure?")){
                         handleEventDeletion(axios, auth, event.id);
+                      }
                     }
                     location.reload()
                     close();
