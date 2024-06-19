@@ -6,6 +6,7 @@ import CalendarPage from "@pages/CalendarPage";
 import ProfilePage from "@/pages/ProfilePage";
 import PasswordRemindPage from "@/pages/PasswordRemindPage";
 import NewPasswordPage from "@/pages/NewPasswordPage";
+import HomePage from "@pages/HomePage"
 
 
 
@@ -14,6 +15,10 @@ export default [
         path: "/",
         element: <RootPage />,
         children: [
+            {
+                path: "",
+                element: <HomePage />
+            },
             {
                 path: "login",
                 element: <LoginPage />
