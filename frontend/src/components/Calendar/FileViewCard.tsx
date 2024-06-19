@@ -13,16 +13,32 @@ import { Button } from '@components/ui/button'
 
 interface Props {
     calendarFile: File
+    onAdd: (data: any) => void
 }
 
 
-export default ({ calendarFile }: Props) => {
+export default ({ calendarFile, onAdd }: Props) => {
 
 
     const contents = useQuery({
         queryKey: ['filedata', calendarFile.name],
         queryFn: async () => extractEvents(await calendarFile.text())
     })
+
+    const handleAdd = () => {
+        return contents.data!.map(
+            e => {
+                return {
+                    startDate: e.start.toDateString(),
+                    endDate: e.end.toDateString(),
+                    startTime: e.start.toLocaleTimeString(),
+                    endTime: e.end.toLocaleTimeString(),
+                    title: e.title,
+                    description: e.description,
+                    location: ''
+                }
+            })
+    }
 
     return (
 
@@ -45,7 +61,7 @@ export default ({ calendarFile }: Props) => {
                 }
             </Content>
             <Footer>
-                <Button> Add events </Button>
+                <Button disabled={contents.isError} onClick={_ => onAdd(handleAdd())} > Add events </Button>
             </Footer>
         </Card>
 

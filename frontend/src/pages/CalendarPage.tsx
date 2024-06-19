@@ -7,7 +7,7 @@ import authContext from "@/utils/authContext";
 import axiosContext from "@/utils/axiosContext";
 import { useContext } from "react";
 
-export default function CalendarPage () {
+export default function CalendarPage() {
 
     const [currentWeek, setCurrentWeek] = useState(new Date());
     const startDate = startOfWeek(currentWeek);
@@ -16,7 +16,7 @@ export default function CalendarPage () {
     const auth = useContext(authContext);
     const axios = useContext(axiosContext);
     const [isLoading, setIsLoading] = useState(true);
-    
+
     const session = useQuery({
         queryKey: ['user'],
         queryFn: async () => {
@@ -36,36 +36,36 @@ export default function CalendarPage () {
     const array_events = useQuery({
         queryKey: ['events'],
         queryFn: async () => {
-            const data = await axios.get("/events", { headers: { 'Authorization': `Bearer ${token.data}` } } )
+            const data = await axios.get("/events", { headers: { 'Authorization': `Bearer ${token.data}` } })
             setIsLoading(false)
             return data
         },
-        enabled: !!token.data        
+        enabled: !!token.data
     })
 
-    return(
+    return (
         <section>
             {!isLoading ?
-            <section>
-                <NavigationCalendar
-                prevWeek={() => setCurrentWeek(subWeeks(currentWeek, 1))} 
-                nextWeek={() => setCurrentWeek(addWeeks(currentWeek, 1))} 
-                startDate={startDate} 
-                endDate={endDate}      
-                axios={axios}
-                auth={token}
-                session={session}
-                />
-                <Calendar 
-                    daysOfWeek={daysOfWeek} 
-                    numCols={7} 
-                    numRows={48} 
-                    events={array_events.data.data}
-                    axios={axios}
-                    auth={token}
-                    session={session}
-                />
-            </section> : <div></div>
+                <section>
+                    <NavigationCalendar
+                        prevWeek={() => setCurrentWeek(subWeeks(currentWeek, 1))}
+                        nextWeek={() => setCurrentWeek(addWeeks(currentWeek, 1))}
+                        startDate={startDate}
+                        endDate={endDate}
+                        axios={axios}
+                        auth={token}
+                        session={session}
+                    />
+                    <Calendar
+                        daysOfWeek={daysOfWeek}
+                        numCols={7}
+                        numRows={48}
+                        events={array_events.data.data}
+                        axios={axios}
+                        auth={token}
+                        session={session}
+                    />
+                </section> : <div></div>
             }
         </section>
     );
