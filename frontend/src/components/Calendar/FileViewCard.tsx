@@ -6,10 +6,10 @@ import {
     CardFooter as Footer,
     CardTitle as Title,
 } from "@components/ui/card"
-import { Input } from "@components/ui/input";
-import { Label } from "@components/ui/label"
 import { useQuery } from "@tanstack/react-query";
 import { extractEvents } from "@utils/ical-utils"
+import EventCard from "@components/Calendar/EventCard";
+import { Button } from '@components/ui/button'
 
 interface Props {
     calendarFile: File
@@ -36,10 +36,16 @@ export default ({ calendarFile }: Props) => {
                 </Description>
             </Header>
             <Content>
-                <b> events: </b>
-                <>{JSON.stringify(contents.data)}</>
+                <b> events: {contents.data?.length} </b>
+                {contents.isSuccess ?
+                    contents.data.map(
+                        (e, index) => { return <EventCard key={e.title + index} title={e.title} description={e.description} start={e.start} end={e.end} /> }
+                    )
+                    : "loading..."
+                }
             </Content>
             <Footer>
+                <Button> Add events </Button>
             </Footer>
         </Card>
 

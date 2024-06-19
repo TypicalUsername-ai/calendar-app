@@ -1,4 +1,4 @@
-const EVENT_REGEX = /(?<=BEGIN:VEVENT[\r\n]+)[\s\S]*?(?=END:VEVENT)/
+const EVENT_REGEX = /(?<=BEGIN:VEVENT[\r\n]+)[\s\S]*?(?=END:VEVENT)/g
 
 export interface IcalEvent {
     title: string,
