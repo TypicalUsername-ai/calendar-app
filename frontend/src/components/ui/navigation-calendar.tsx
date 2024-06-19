@@ -9,9 +9,9 @@ interface NavigationCalendarProps {
     nextWeek: () => void;
     startDate: Date;
     endDate: Date;
-    events: any;
-    setNewEvent: (newEvent: any) => void;
-    newEvent: any;
+    axios: any;
+    auth: any;
+    session: any;
 }
 
 const NavigationCalendar: React.FC<NavigationCalendarProps> = ({
@@ -19,9 +19,9 @@ const NavigationCalendar: React.FC<NavigationCalendarProps> = ({
     nextWeek,
     startDate,
     endDate,
-    events,
-    setNewEvent,
-    newEvent,
+    axios,
+    auth,
+    session
 }) => {
     return (
         <div className="w-full min-w-[1662px] h-16 bg-gray-200">
@@ -34,9 +34,9 @@ const NavigationCalendar: React.FC<NavigationCalendarProps> = ({
             </section>
             <section className="float-right inline-flex">
                 <CreateEventButton 
-                    events={events} 
-                    setNewEvent={setNewEvent} 
-                    newEvent={newEvent}
+                    axios={axios}
+                    auth={auth}
+                    session={session}
                 />
             </section>
         </div>
