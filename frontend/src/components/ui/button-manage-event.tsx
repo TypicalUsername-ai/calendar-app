@@ -1,20 +1,23 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import { ChevronDownIcon, PhoneIcon, PlusIcon } from '@heroicons/react/20/solid';
-import { addEvent } from '@/functions/calendar';
+import { PlusIcon } from '@heroicons/react/20/solid';
+import { addEvent, deleteEvent, editEvent } from '@/functions/calendar';
+import { MinusIcon } from 'lucide-react';
 
-interface CreateEventButtonProps {
+interface ManageEventButtonProps {
   axios: any;
   auth: any;
   session: any;
+  event: any;
 }
 
 const callsToAction = [
-  { name: 'Add Event', href: '#', icon: PlusIcon },
+  { name: 'Add Event', edit: true, icon: PlusIcon },
+  { name: 'Delete Event', edit: false, icon: MinusIcon }
 ];
 
-const CreateEventButton: React.FC<CreateEventButtonProps> = ({ axios, auth, session }) => {
-  // Variables used to create an event
+const ManageEventButton: React.FC<ManageEventButtonProps> = ({ axios, auth, session, event }) => {
+
   const [formData, setFormData] = useState({
     startDate: '',
     endDate: '',
@@ -24,6 +27,26 @@ const CreateEventButton: React.FC<CreateEventButtonProps> = ({ axios, auth, sess
     description: '',
     location: ''
   });
+
+  useEffect(() => {
+    if (event) {
+
+        const startDate = event.start.split('T')[0]
+        const endDate = event.end.split('T')[0]
+        const startTime = event.start.split('T')[1] 
+        const endTime = event.end.split('T')[1]
+        
+      setFormData({
+        startDate: startDate,
+        endDate: endDate ,
+        startTime: startTime || '',
+        endTime: endTime || '',
+        title: event.name || '',
+        description: event.description || '',
+        location: event.location || ''
+      });
+    }
+  }, [event]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
@@ -35,9 +58,8 @@ const CreateEventButton: React.FC<CreateEventButtonProps> = ({ axios, auth, sess
 
   return (
     <Popover>
-      <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900 relative top-3 mx-10 bg-white rounded-md shadow-md p-1">
-        <span className='p-1'>Add Event</span>
-        <ChevronDownIcon className="h-8 w-5" aria-hidden="true" />
+      <Popover.Button className="text-sm p-1 relative w-full font-semibold text-gray-900 bg-gray-200">
+        <p>{event.name}</p>
       </Popover.Button>
 
       <Transition
@@ -104,19 +126,24 @@ const CreateEventButton: React.FC<CreateEventButtonProps> = ({ axios, auth, sess
                 <textarea name='location' value={formData.location} onChange={handleChange} className='h-40 text-lg ' maxLength={250} placeholder='Description' />
               </div>
               <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                {callsToAction.map((item) => (
-                  <button
+              {callsToAction.map((item) => (
+                <button
                     key={item.name}
                     onClick={() => {
-                      addEvent( axios, auth, formData, session );
-                      location.reload()
-                      close();
+                    if (item.edit == true) {
+                        editEvent(axios, auth, formData, session, event.id);
+                        location.reload()
+                    } else {
+                        deleteEvent(axios, auth, event.id);
+                    }
+                    location.reload()
+                    close();
                     }}
                     className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100"
-                  >
+                >
                     <item.icon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
                     {item.name}
-                  </button>
+                </button>
                 ))}
               </div>
             </div>
@@ -127,4 +154,4 @@ const CreateEventButton: React.FC<CreateEventButtonProps> = ({ axios, auth, sess
   );
 };
 
-export default CreateEventButton;
+export default ManageEventButton;

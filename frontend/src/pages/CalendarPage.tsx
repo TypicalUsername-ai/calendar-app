@@ -61,6 +61,9 @@ export default function CalendarPage () {
                     numCols={7} 
                     numRows={48} 
                     events={array_events.data.data}
+                    axios={axios}
+                    auth={token}
+                    session={session}
                 />
             </section> : <div></div>
             }

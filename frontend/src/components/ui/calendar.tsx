@@ -6,17 +6,20 @@ import {
     isWithinInterval,
     getMinutes,
     getHours,
-    differenceInMinutes
 } from 'date-fns';
+import ManageEventButton from './button-manage-event';
 
 interface CalendarProps {
     daysOfWeek: Date[];
     numRows: number;
     numCols: number;
     events: any[];
+    axios: any;
+    auth: any;
+    session: any;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ daysOfWeek, numRows, numCols, events }) => {
+const Calendar: React.FC<CalendarProps> = ({ daysOfWeek, numRows, numCols, events, axios, auth, session }) => {
 
     const generateClockArray = (): string[] => {
         let clock: string[] = [];
@@ -56,10 +59,10 @@ const Calendar: React.FC<CalendarProps> = ({ daysOfWeek, numRows, numCols, event
             return (
                 <div
                     key={event.id}
-                    className="absolute bg-blue-200 p-1 text-xs"
+                    className="absolute bg-blue-200 text-xs"
                     style={{ top: `${top}%`, height: `${slotHeight}%`, width: `${width}%`, left: `${left}%` }}
                 >
-                    {event.name}
+                    <ManageEventButton axios={axios} auth={auth} session={session} event={event} />
                 </div>
             );
         });
