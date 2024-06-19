@@ -2,6 +2,7 @@ import React, { useState, Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { ChevronDownIcon, PhoneIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { addEvent } from '@/functions/calendar';
+import { useToast } from "@/components/ui/use-toast"
 
 interface CreateEventButtonProps {
   axios: any;
@@ -32,6 +33,29 @@ const CreateEventButton: React.FC<CreateEventButtonProps> = ({ axios, auth, sess
       [name]: value
     }));
   };
+
+  const { toast } = useToast();
+
+  const handleEventAddition = async (
+    axios: any,
+    auth: any,
+    formData: any,
+    session: any
+  ) => {
+    try {
+      addEvent( axios, auth, formData, session );
+      toast({
+        title: "Hooray!",
+        description: `Event added successfully.`
+      })
+    } catch (error: any) {
+      toast({
+        title: "Something went wrong...",
+        description: error.json?.msg || error.response?.data.error_description,
+        variant: 'destructive'
+      })
+    }
+  }
 
   return (
     <Popover>
@@ -108,7 +132,7 @@ const CreateEventButton: React.FC<CreateEventButtonProps> = ({ axios, auth, sess
                   <button
                     key={item.name}
                     onClick={() => {
-                      addEvent( axios, auth, formData, session );
+                      handleEventAddition( axios, auth, formData, session );
                       location.reload()
                       close();
                     }}

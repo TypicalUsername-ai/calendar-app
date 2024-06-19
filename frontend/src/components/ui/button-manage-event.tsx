@@ -1,8 +1,9 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import { Popover, Transition } from '@headlessui/react';
-import { PlusIcon } from '@heroicons/react/20/solid';
-import { addEvent, deleteEvent, editEvent } from '@/functions/calendar';
+import { PencilIcon } from '@heroicons/react/20/solid';
+import { deleteEvent, editEvent } from '@/functions/calendar';
 import { MinusIcon } from 'lucide-react';
+import { useToast } from './use-toast';
 
 interface ManageEventButtonProps {
   axios: any;
@@ -12,7 +13,7 @@ interface ManageEventButtonProps {
 }
 
 const callsToAction = [
-  { name: 'Add Event', edit: true, icon: PlusIcon },
+  { name: 'Edit Event', edit: true, icon: PencilIcon },
   { name: 'Delete Event', edit: false, icon: MinusIcon }
 ];
 
@@ -55,6 +56,50 @@ const ManageEventButton: React.FC<ManageEventButtonProps> = ({ axios, auth, sess
       [name]: value
     }));
   };
+
+  const { toast } = useToast();
+
+  const handleEventEdition = async (
+    axios: any,
+    auth: any, 
+    formData: any,
+    session: any,
+    id: any
+  ) => {
+    try {
+      editEvent(axios, auth, formData, session, id);
+      toast({
+        title: "Hooray!",
+        description: `Event edited successfully.`
+      })
+    } catch (error: any) {
+      toast({
+        title: "Something went wrong...",
+        description: error.json?.msg || error.response?.data.error_description,
+        variant: 'destructive'
+      })
+    }
+  }
+
+  const handleEventDeletion = async (
+    axios: any,
+    auth: any, 
+    id: any
+  ) => {
+    try {
+      deleteEvent(axios, auth, id);
+      toast({
+        title: "Hooray!",
+        description: `Event deleted successfully.`
+      })
+    } catch (error: any) {
+      toast({
+        title: "Something went wrong...",
+        description: error.json?.msg || error.response?.data.error_description,
+        variant: 'destructive'
+      })
+    }
+  }
 
   return (
     <Popover>
@@ -131,10 +176,10 @@ const ManageEventButton: React.FC<ManageEventButtonProps> = ({ axios, auth, sess
                     key={item.name}
                     onClick={() => {
                     if (item.edit == true) {
-                        editEvent(axios, auth, formData, session, event.id);
+                        handleEventEdition(axios, auth, formData, session, event.id);
                         location.reload()
                     } else {
-                        deleteEvent(axios, auth, event.id);
+                        handleEventDeletion(axios, auth, event.id);
                     }
                     location.reload()
                     close();
