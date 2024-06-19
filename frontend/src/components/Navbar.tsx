@@ -45,6 +45,7 @@ export default () => {
                 description: `Logged out successfully.`
             });
             navigate("/")
+            location.reload()
         } catch (error: any) {
             console.error(error);
             toast({
