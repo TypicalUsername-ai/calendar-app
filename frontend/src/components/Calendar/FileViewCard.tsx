@@ -8,6 +8,7 @@ import {
 } from "@components/ui/card"
 import { Input } from "@components/ui/input";
 import { Label } from "@components/ui/label"
+import { useQuery } from "@tanstack/react-query";
 
 interface Props {
     calendarFile: File
@@ -15,6 +16,11 @@ interface Props {
 
 
 export default ({ calendarFile }: Props) => {
+
+    const contents = useQuery({
+        queryKey: ['filedata', calendarFile.name],
+        queryFn: async () => await calendarFile.text()
+    })
 
     return (
 
@@ -29,6 +35,7 @@ export default ({ calendarFile }: Props) => {
             </Header>
             <Content>
                 <b> events: </b>
+                <>{contents.data}</>
             </Content>
             <Footer>
             </Footer>
