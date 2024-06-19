@@ -1,11 +1,10 @@
+
 // Function to handle adding events
 export const addEvent = (
-    hour: number, 
-    minutes: number, 
-    col: string, 
-    events: Record<string, any>, 
-    setNewEvent: (eventKey: string) => void, 
-    newEvent: any
+    axios: any,
+    auth: any,
+    formData: any,
+    session: any
 ): void => {
     /*
     Hours and minutes are converted in order to fit into indexing of the calendar 
@@ -15,11 +14,18 @@ export const addEvent = (
     Indexing in calendar starts from 0 and is set to 6:00 ->  (6-6)*4+0=0 => 6:00
     (7-6)*4+2=6 =>  7:30
     */
-    console.log(hour + minutes);
-    let convertedIndex = ((hour - 6) * 4) + minutes;
-    events[`${convertedIndex}-${col}`] = newEvent;
-    setNewEvent(`${convertedIndex}-${col}`);
-    console.log("events", events);
+
+    /**
+     * Adding event object to database
+     */ 
+    axios.post('/events', {
+        owner: session.data.id,
+        name: formData.title,
+        location: formData.location,
+        description: formData.description,
+        start: `${formData.startDate} ${formData.startTime}`,
+        end: `${formData.endDate} ${formData.endTime}` 
+    }, { headers: { 'Authorization': `Bearer ${auth.data}` } })
 };
 
 // Function to render events in the calendar
@@ -36,3 +42,4 @@ export const renderEvents = (
         return null;
     }
 };
+ 
