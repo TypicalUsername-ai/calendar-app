@@ -31,13 +31,14 @@ export default function CalendarPage() {
         queryFn: async () => {
             const data = await auth.currentUser()?.jwt();
             return data
-        }
+        },
+        enabled: !!session.data
     })
 
     const array_events = useQuery({
         queryKey: ['events'],
         queryFn: async () => {
-            const data = await axios.get("/events", { headers: { 'Authorization': `Bearer ${token.data}` } })
+            const data = await axios.get(`/events`, { headers: { 'Authorization': `Bearer ${token.data}` }, params: {owner: `eq.${session.data.id}`} })
             setIsLoading(false)
             return data
         },

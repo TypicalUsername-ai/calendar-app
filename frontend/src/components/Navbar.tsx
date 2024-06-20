@@ -59,7 +59,7 @@ export default () => {
 
     return (
         <>
-            <Menu className="p-2 border-2 rounded-md">
+            <Menu className="p-2 border-2 m-auto rounded-md">
                 <MenuList>
                     <Item> <Button variant="link" onClick={() => navigate('/')} > <NavLink> Home </NavLink> </Button> </Item>
                     {session.isSuccess && (
