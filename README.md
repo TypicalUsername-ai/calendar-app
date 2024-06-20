@@ -19,15 +19,15 @@
    ```bash
      cp .example.env .env
    ```
-### SSL setup
-3. Go to `ssl` folder in the project and run `generate_cert.sh` script
-### Start docker
-in the root project directory run `docker compose up -d` (-d to detach logs)
-### Database setup
-4. Go to  the `database` folder in your project and do
+3. Go to  the `database` folder in your project and do
    ```bash
       cp .example.env .env
    ```
+### SSL setup
+4. Go to `ssl` folder in the project and run `generate_cert.sh` script
+### Start docker
+in the root project directory run `docker compose up -d` (-d to detach logs)
+### Database setup
 5. Run `npm i`
 6. Run `npm run db-push`
 7. Reset the API container with the new schema by running `docker compose restart rest`
